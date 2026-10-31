@@ -1,4 +1,7 @@
-assets/index.html is copied from mdkite.nvim v2.1.0
+src/mdkite/assets/index.html is derived from mdkite.nvim v2.1.0
 https://github.com/selimacerbas/mdkite.nvim
 Copyright (c) 2025 Selim Acerbas
-Licensed under the MIT License; see assets/LICENSE.
+Licensed under the MIT License; see src/mdkite/assets/LICENSE.
+
+Local changes: live-reload (SSE), scroll sync, auth token and morphdom
+patching were removed; the page renders once per load.

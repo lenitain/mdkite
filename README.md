@@ -1,12 +1,12 @@
 # mdkite
 
-Standalone Go host for the [mdkite.nvim](https://github.com/selimacerbas/mdkite.nvim) browser preview. One binary; no Neovim, Node, or Lua at runtime.
+Renders one Markdown file in the browser. No Neovim, no Node, no build step.
 
 ```bash
 mdkite README.md
 ```
 
-The file is served on a loopback port, opened in the default browser, and reloaded when it changes. `mdkite --help` shows the version and the only option.
+The file is served on a loopback port and opened in the default browser. Nothing watches the file: reload the tab to see a saved change.
 
 ## Features
 
@@ -21,7 +21,7 @@ Raw HTML in Markdown is rendered, matching the plugin default. Do not preview un
 
 Preview assets are downloaded on first use and stored in the user cache directory (`~/.cache/mdkite/cdn` on Linux, honoring `$XDG_CACHE_HOME`). Later runs read from disk; cached assets work offline. Mermaid diagram types and icon packs are lazy-loaded, so a new type needs network once.
 
-Downloads use Go's proxy environment (`HTTPS_PROXY`). If Go cannot reach a CDN but the browser can, the request falls back to a 307 redirect and is not cached.
+Downloads honor `HTTPS_PROXY`. If the process cannot reach a CDN but the browser can, the request falls back to a 307 redirect and is not cached.
 
 ```bash
 rm -rf ~/.cache/mdkite/cdn   # force a fresh download
@@ -39,22 +39,25 @@ end, { desc = "Markdown preview" })
 
 The file is read from disk, so save first. Each run is a separate instance and opens a new tab.
 
-## Build
+## Install
 
-Requires Go 1.22+.
+Requires Python 3.9+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-make build      # static ./mdkite
-make install    # ~/.local/bin/mdkite
+uv tool install .          # puts `mdkite` on PATH
+uv run mdkite README.md    # straight from a checkout, no install
 ```
+
+The UI lives in `src/mdkite/assets/index.html`, so editing it needs no build step; the next run serves the change.
 
 ## Limits
 
 - Saved file only; unsaved buffer contents are not previewed.
-- No cursor scroll sync; there is no editor to provide a cursor.
+- No live reload and no cursor scroll sync: the page renders once per load.
+- A CDN asset fetched while offline is not cached; reload with a network.
 
 ## License
 
-Go code: MIT, see `LICENSE`.
+Python code: MIT, see `LICENSE`.
 
-Preview UI: mdkite.nvim, MIT, Copyright (c) 2025 Selim Acerbas, see `assets/LICENSE`.
+Preview UI: derived from mdkite.nvim, MIT, Copyright (c) 2025 Selim Acerbas, see `src/mdkite/assets/LICENSE`.
