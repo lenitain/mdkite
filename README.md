@@ -41,11 +41,20 @@ The file is read from disk, so save first. Each run is a separate instance and o
 
 ## Install
 
-Requires Python 3.9+ and [uv](https://docs.astral.sh/uv/).
+Requires [uv](https://docs.astral.sh/uv/); Python 3.9+ is fetched automatically.
 
 ```bash
-uv tool install .          # puts `mdkite` on PATH
-uv run mdkite README.md    # straight from a checkout, no install
+git clone git@github.com:lenitain/mdkite
+cd mdkite
+uv tool install .        # puts `mdkite` on PATH (~/.local/bin)
+```
+
+Uninstall: `uv tool uninstall mdkite`.
+
+To run from a checkout without installing:
+
+```bash
+uv run mdkite README.md
 ```
 
 The UI lives in `src/mdkite/assets/index.html`, so editing it needs no build step; the next run serves the change.
